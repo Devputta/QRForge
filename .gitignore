@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production build outputs
+dist/
+build/
+
+# Local cache & logs
+.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Coverage & test artifacts
+coverage/
+.vitest/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env*
+!.env.example
+
+# IDE & Editor folders
+.idea/
+.vscode/
+*.swp
+*.swo
