@@ -1,241 +1,309 @@
-# QRForge — Universal QR Code Platform
+<p align="center">
+  <a href="https://github.com/Devputta/QRForge">
+    <img src="https://raw.githubusercontent.com/Devputta/QRForge/main/QR/qrforge_1024px%20(1).png" alt="QR code for the QRForge repository" width="220" />
+  </a>
+</p>
 
-A fast, private, client-side QR code generator that runs entirely in your web browser. QRForge creates, validates, customizes, and exports scannable QR codes for websites, turn-by-turn Google Maps directions, Wi-Fi credentials, digital contact cards (vCards), WhatsApp chats, calendar events, and media documents—with zero telemetry and no server intermediaries.
+<h1 align="center">QRForge</h1>
 
-- **Source Code**: [https://github.com/Devputta/QRForge](https://github.com/Devputta/QRForge)
-- **License**: MIT License
-- **Runtime**: Client-side single-page application (React 19 + TypeScript + Vite)
+<p align="center">
+  <strong>A private, browser-only QR code generator.</strong><br />
+  Make codes for links, Wi-Fi, contacts, maps and more. Check that they scan, then export for screen or print.
+</p>
 
----
+<p align="center">
+  <a href="https://github.com/Devputta/QRForge/actions/workflows/ci.yml">
+    <img src="https://github.com/Devputta/QRForge/actions/workflows/ci.yml/badge.svg" alt="CI status" />
+  </a>
+  <img src="https://img.shields.io/badge/license-MIT-16a34a" alt="MIT license" />
+  <img src="https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white" alt="Vite 8" />
+  <img src="https://img.shields.io/badge/Tailwind-4-06b6d4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
+  <img src="https://img.shields.io/badge/runs-in%20your%20browser-111827" alt="Runs in your browser" />
+</p>
 
-## Problem Statement & Purpose
-
-Many web-based QR generators route user scans through proprietary URL redirect servers, inject sponsored landing pages, or require recurring subscription fees to keep static codes active. Furthermore, sensitive credentials (such as office Wi-Fi passwords, personal telephone numbers, and private contact vCards) are routinely transmitted to third-party databases.
-
-QRForge was created to solve this:
-1. **Direct Encoding**: Every QR code directly encodes the destination payload into the visual matrix. Scanners connect directly to the target destination without redirection.
-2. **Strict Privacy**: Execution happens locally in the browser. No tracking cookies, no server-side telemetry, no API keys, and no database persistence.
-3. **Self-Hosted Assets**: Fonts and dependencies run locally without third-party CDN tracking requests.
-
----
-
-## User Interface & Features
-
-```
-+-------------------------------------------------------------------------------+
-| [QRForge]             Generator      Batch export      Library (3)   Print tips|
-|                                                                               |
-|  What should the code open?                                                   |
-|  [ Website ] [ Maps ] [ Wi-Fi ] [ Contact ] [ WhatsApp ] [ Text ] [ Event ]   |
-|                                                                               |
-|  Website address: [ https://example.com/portal                              ] |
-|  [+] Campaign tracking parameters (optional UTM tags)                         |
-|                                                                               |
-|  Colors and shapes:                                  +---------------------+  |
-|  - Dark color: [ #000000 ]  Light color: [ #ffffff ] |                     |  |
-|  - Dots: [ Square ] [ Rounded ] [ Dots ]             |   [ QR MATRIX ]     |  |
-|  - Corners: [ Square ] [ Rounded ] [ Circle ]        |                     |  |
-|  - Error correction: [ L ] [ M ] [ Q ] [ H ]         +---------------------+  |
-|  - Center logo: [ Upload file / Select icon ]         [✓] Scan verified (jsQR)|
-|                                                       [ Download PNG ] [ SVG ]|
-|                                                       [ Export Print PDF ]    |
-+-------------------------------------------------------------------------------+
-```
-
-### Core Capabilities
-- **Scan Verified in Real Time**: Renders and immediately decodes the generated canvas using `jsQR` to confirm camera readability before downloading.
-- **Multiple Export Formats**:
-  - High-Resolution PNG (512px, 1024px, 2048px).
-  - Clean Vector SVG for signage, banners, and vector design tools.
-  - Print-Ready PDF with custom physical size selection in centimeters (cm).
-  - Quick browser printing and 1-click clipboard image copy.
-- **Visual Customization**:
-  - High-contrast color pairings with real-time WCAG contrast ratio analysis.
-  - Module shapes (Square, Rounded, Dots) and Finder corner markers (Square, Rounded, Circle).
-  - Error correction levels (`L` ~7%, `M` ~15%, `Q` ~25%, `H` ~30%).
-  - Configurable quiet border zones (0, 1, 2, or 4 modules).
-  - Embedded center logos and presets with automatic error-correction warnings.
-- **Batch CSV Processing**: Generate multiple QR codes at once from CSV files with zip packaging, collision-safe filenames, and an RFC 4180 index manifest.
-- **Local Library with JSON Backup**: Save configurations locally in `localStorage`, organize, re-edit, duplicate, and export or import your library via validated JSON files.
-- **Session Auto-Drafting**: In-progress forms are automatically preserved in `sessionStorage` and `localStorage` so unsaved work is never lost on refresh.
-- **Full Theme Support**: Light and dark themes that respect your operating system's `prefers-color-scheme`, with a 1-click manual toggle.
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#supported-qr-types">QR types</a> ·
+  <a href="#privacy-and-security">Privacy</a> ·
+  <a href="#contributing">Contributing</a>
+</p>
 
 ---
 
-## Static Codes Architecture
+## Table of contents
 
-All QR codes created in QRForge are **static QR codes**:
-- **No Expiration**: Once printed, the code works indefinitely as long as your destination remains online.
-- **No Redirection or Middlemen**: The scanner connects straight to your URL or reads the plain text directly.
-- **No Scan Analytics**: Because no central server processes the scan event, scans are completely private and untracked.
-- **Non-Editable Once Printed**: Ensure your URLs, Wi-Fi credentials, and phone numbers are verified before printing physical collateral.
-
----
-
-## Supported QR Types
-
-| Type | Format / Payload Standard | Notes |
-| ---- | ------------------------- | ----- |
-| **Website** | `https://...` with optional UTM builder | Validates HTTP/HTTPS protocols and encodes campaign parameters. |
-| **Google Maps** | Universal Maps Search, Turn-by-Turn Directions, or direct URLs | Supports driving, transit, walking, and bicycling travel modes. |
-| **Wi-Fi Network** | `WIFI:S:<ssid>;T:<type>;P:<pass>;;` | Supports WPA/WPA2/WPA3, WEP, and open networks. Passwords are never saved to disk. |
-| **Contact Card** | vCard 3.0 (`BEGIN:VCARD` ... `END:VCARD`) | Full RFC 2426 character escaping for commas, semicolons, backslashes, and newlines. |
-| **WhatsApp** | `https://wa.me/<number>?text=<encoded_msg>` | Formats international phone numbers and optional prefilled messages. |
-| **Plain Text** | Raw string representation | Displays plain notes, serial identifiers, access codes, or instructions directly on scan. |
-| **Calendar Event** | iCalendar 2.0 (`BEGIN:VCALENDAR` ... `BEGIN:VEVENT`) | Opens in Google Calendar, Apple Calendar, and Outlook with all-day and timed support. |
-| **Social Links** | Direct HTTPS profile URLs | Supports LinkedIn, X (Twitter), GitHub, YouTube, Instagram, and custom URLs. |
-| **Email** | `mailto:<recipient>?subject=...&body=...` | Formats RFC 6068 mailto URIs with URI-encoded subject and body lines. |
-| **Phone & SMS** | `tel:<number>` / `smsto:<number>:<message>` | Direct dialer triggers and pre-addressed SMS text messages. |
-| **File Link** | HTTPS share links for PDFs, presentations, and media | Reminds users to set proper cloud sharing permissions. |
+- [Why QRForge](#why-qrforge)
+- [Features](#features)
+- [Supported QR types](#supported-qr-types)
+- [Quick start](#quick-start)
+- [How it works](#how-it-works)
+- [Static codes: what that means](#static-codes-what-that-means)
+- [Privacy and security](#privacy-and-security)
+- [Accessibility](#accessibility)
+- [Tech stack](#tech-stack)
+- [Project structure](#project-structure)
+- [Scripts](#scripts)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Known limitations](#known-limitations)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Security reporting](#security-reporting)
+- [License](#license)
+- [Disclaimer](#disclaimer)
 
 ---
 
-## Technology Stack
+## Why QRForge
 
-- **Framework**: React 19 + TypeScript
-- **Bundler & Build Tool**: Vite 8
-- **Styling**: Tailwind CSS v4
-- **QR Encoding**: `qrcode`
-- **QR Verification**: `jsQR`
-- **Vector & PDF Generation**: `jspdf`
-- **Archive Packing**: `jszip`
-- **Icons**: `lucide-react`
-- **Typography**: `@fontsource/plus-jakarta-sans` and `@fontsource/jetbrains-mono` (100% self-hosted)
-- **Testing**: Vitest 5 + Happy-DOM
+Many online QR generators send every scan through their own redirect server, add ads to the landing page, or turn the code off unless you pay. Others upload your Wi-Fi password or contact details to a database you never agreed to.
 
----
+QRForge takes a simpler approach:
 
-## Getting Started
+- **Direct encoding.** The code contains your actual destination. Scanners go straight there, with no middleman.
+- **Everything stays local.** Codes are generated in your browser. There is no backend, no account, no API key and no telemetry.
+- **Nothing to expire.** There is no subscription to lapse and no server that can be switched off.
+- **Checked before you print.** Each code is decoded again in the browser so you know a camera can read it.
 
-### Prerequisites
-- Node.js 18.0.0 or higher
-- npm 9.0.0 or higher
+## Features
 
-### Installation
+**Create**
+- 11 content types, from websites and Wi-Fi to calendar events (see the [table below](#supported-qr-types)).
+- Optional UTM fields for website links.
+- Batch mode: upload a CSV and get a ZIP of finished codes with a manifest.
+
+**Style**
+- Square, rounded or dot-shaped data modules.
+- Square, rounded or circular corner markers.
+- Custom colors with a live WCAG contrast check.
+- Error correction levels L, M, Q and H.
+- Adjustable quiet zone (0, 1, 2 or 4 modules).
+- Center logo from a built-in preset or your own upload, with a warning if the error correction is too low.
+
+**Verify**
+- **Scan check:** the rendered code is decoded with jsQR and compared with what you meant to encode.
+- Contrast ratio and QR version shown next to the preview.
+
+**Export**
+- PNG at 512, 1024 or 2048 px.
+- SVG for signage and design tools.
+- PDF at a physical size you choose in centimeters.
+- Copy to clipboard and print preview.
+
+**Keep**
+- Local library with search, filters, duplicate and delete.
+- JSON backup and restore, with validation on import.
+- Drafts survive a refresh.
+- Light and dark themes that follow your system, plus a manual toggle.
+
+## Supported QR types
+
+| Type | What is encoded | Notes |
+| --- | --- | --- |
+| Website | `https://...` | Only http and https. Optional UTM builder. |
+| Google Maps | Search, directions or a pasted Maps link | Driving, walking, cycling and transit modes. |
+| Wi-Fi | `WIFI:S:<ssid>;T:<type>;P:<pass>;;` | WPA, WEP or open. Passwords are never saved. |
+| Contact card | vCard 3.0 | Commas, semicolons, backslashes and newlines are escaped. |
+| WhatsApp | `https://wa.me/<number>?text=...` | Optional prefilled message. |
+| Plain text | The text itself | Notes, serial numbers, access codes. |
+| Calendar event | iCalendar 2.0 | Timed or all-day events. |
+| Social profile | Profile URL | LinkedIn, X, GitHub, Instagram, YouTube or any custom URL. |
+| Email | `mailto:` with subject and body | RFC 6068 encoding. |
+| Phone and SMS | `tel:` or `smsto:` | Optional pre-written message. |
+| File link | HTTPS share link | Reminder to check sharing permissions. |
+
+## Quick start
+
+**Requirements:** Node.js 20 or newer and npm.
+
 ```bash
-# Clone the repository
 git clone https://github.com/Devputta/QRForge.git
 cd QRForge
-
-# Install dependencies
 npm install
-```
-
-### Development
-```bash
 npm run dev
 ```
-Open `http://localhost:3000` in your web browser.
 
-### Automated Testing
+Open <http://localhost:3000>.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Form input] --> B[Validate and build content]
+    B --> C[Generate QR matrix]
+    C --> D[Draw on canvas or SVG]
+    D --> E[Decode with jsQR]
+    E --> F{Matches?}
+    F -- Yes --> G[Export PNG, SVG or PDF]
+    F -- No --> H[Show a warning]
+```
+
+Each content type has its own builder in `src/utils/qrPayloads.ts`. The renderer in `src/utils/qrRenderer.ts` draws the same matrix to a canvas for PNG and to markup for SVG, so what you see is what you export.
+
+## Static codes: what that means
+
+Every code made with QRForge is static.
+
+| You get | You do not get |
+| --- | --- |
+| Codes that work as long as the destination stays online | Edit-after-printing |
+| Direct scans with no redirect | Scan counts or analytics |
+| No account, expiry or fees | A dashboard |
+
+Double-check URLs, passwords and phone numbers before you print anything.
+
+## Privacy and security
+
+- **No network calls for your data.** Content never leaves the browser tab.
+- **No trackers.** No analytics scripts, cookies or third-party requests. Fonts are self-hosted.
+- **Wi-Fi passwords are never stored.** They are stripped from drafts and from JSON backups.
+- **Safe printing.** The print preview is built with DOM text nodes, not HTML strings, so content cannot inject markup.
+- **Validated imports.** Library JSON and CSV files are checked before use.
+- **Protocol allow-list.** Website and file links accept only http and https.
+
+Your library and drafts live in your browser's `localStorage` or `sessionStorage`. Clearing site data removes them, so use the JSON export if you want a backup.
+
+Found a vulnerability? See [Security reporting](#security-reporting).
+
+## Accessibility
+
+- Modals trap focus, close with `Esc`, and return focus to the button that opened them.
+- Icon-only buttons have text labels for screen readers.
+- Touch targets are at least 44 px on mobile.
+- Layouts are tested from 320 px to 1440 px wide.
+- Errors appear inline next to the field, not in blocking alerts.
+
+## Tech stack
+
+| Area | Tools |
+| --- | --- |
+| UI | React 19, TypeScript, Tailwind CSS 4 |
+| Build | Vite 8 |
+| QR generation | `qrcode` |
+| QR verification | `jsqr` |
+| PDF export | `jspdf` |
+| Batch ZIP | `jszip` |
+| Icons | `lucide-react` |
+| Fonts | `@fontsource/plus-jakarta-sans`, `@fontsource/jetbrains-mono` (self-hosted) |
+| Tests | Vitest 5, Happy DOM |
+
+## Project structure
+
+```text
+QRForge/
+├── .github/workflows/ci.yml     # Lint, test and build on every push
+├── docs/                        # PRD, architecture, security, testing, roadmap and more
+├── src/
+│   ├── components/
+│   │   ├── DestinationForms/    # One form per QR type
+│   │   ├── BatchGenerator.tsx
+│   │   ├── Header.tsx
+│   │   ├── QRPreviewPanel.tsx
+│   │   ├── SavedLibrary.tsx
+│   │   ├── StandardsModal.tsx
+│   │   └── StyleControls.tsx
+│   ├── types/qr.ts              # Shared types
+│   ├── utils/
+│   │   ├── batchProcessor.ts    # CSV parsing and ZIP creation
+│   │   ├── contrast.ts          # WCAG contrast math
+│   │   ├── presetLogos.ts
+│   │   ├── qrPayloads.ts        # Content builders and validators
+│   │   ├── qrRenderer.ts        # Canvas and SVG drawing
+│   │   ├── theme.ts
+│   │   └── useModalA11y.ts
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── tests/                       # Vitest suites
+├── QR/                          # QR image used in this README
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── CODE_OF_CONDUCT.md
+└── LICENSE
+```
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server on port 3000 |
+| `npm run build` | Create a production build in `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Type-check with TypeScript |
+| `npm test` | Run the test suite once |
+
+## Testing
+
 ```bash
-# Run unit, component, integration, and responsive tests
 npm test
 ```
 
-### Linting & Type Checking
-```bash
-# Run TypeScript compilation checks
-npm run lint
-```
+The suite covers:
 
-### Production Build
+- Every content builder, including escaping rules and decode-back checks with jsQR.
+- Renderer output, SVG shapes, preset logos and contrast math.
+- Security fixes: safe print output, Wi-Fi password stripping and CSV rules.
+- Modal focus trapping and theme switching.
+- Form components, the batch tool and the library.
+- End-to-end create, save and restore flows.
+- Layout limits from 320 px to 1440 px.
+
+See [`docs/TESTING.md`](docs/TESTING.md) for the strategy and the manual QA matrix in [`docs/TEST-CASES.md`](docs/TEST-CASES.md).
+
+## Deployment
+
+QRForge builds to plain static files, so any static host works (GitHub Pages, Netlify, Vercel, Cloudflare Pages, S3).
+
 ```bash
-# Build optimized production bundle
 npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
----
+Upload the `dist/` folder. If you host under a sub-path such as GitHub Pages at `/QRForge/`, set `base: '/QRForge/'` in `vite.config.ts`. More detail is in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
-## Project Structure
+## Known limitations
 
-```
-QRForge/
-├── .github/
-│   └── workflows/
-│       └── ci.yml               # GitHub Actions CI workflow
-├── docs/                        # Project documentation
-│   ├── PRD.md                   # Product Requirements Document
-│   ├── architecture.md          # Architecture & data flow diagram
-│   ├── SETUP.md                 # Setup & troubleshooting guide
-│   ├── TESTING.md               # Testing strategy & coverage notes
-│   ├── SECURITY.md              # Threat model & security design
-│   ├── ACCESSIBILITY.md         # WCAG 2.2 AA accessibility documentation
-│   ├── DEPLOYMENT.md            # Static build & hosting guide
-│   ├── CHANGELOG.md             # Version history
-│   ├── ROADMAP.md               # Roadmap of completed vs planned features
-│   ├── DECISIONS.md             # Technical Architecture Decision Records (ADRs)
-│   └── TEST-CASES.md            # Manual QA test verification matrix
-├── src/
-│   ├── components/              # UI components
-│   │   ├── DestinationForms/    # Type-specific destination input forms
-│   │   ├── BatchGenerator.tsx   # Batch CSV upload, processor, and zip generator
-│   │   ├── Header.tsx           # Global header with navigation, theme, & GitHub link
-│   │   ├── QRPreviewPanel.tsx   # Live canvas preview, jsQR check, & export actions
-│   │   ├── SavedLibrary.tsx     # Local saved codes library, JSON backup & restore
-│   │   ├── StandardsModal.tsx   # Print distance calculator and ISO/IEC 18004 tips
-│   │   └── StyleControls.tsx    # Palette, shapes, error correction, & logo controls
-│   ├── types/
-│   │   └── qr.ts                # TypeScript domain models and configurations
-│   ├── utils/
-│   │   ├── batchProcessor.ts    # CSV parser, cell escaping, and ZIP creator
-│   │   ├── contrast.ts          # WCAG relative luminance & contrast algorithm
-│   │   ├── presetLogos.ts       # Built-in SVG logo presets
-│   │   ├── qrPayloads.ts        # RFC payload builders & sanitizers
-│   │   ├── qrRenderer.ts        # Canvas & SVG matrix drawer
-│   │   ├── theme.ts             # Theme management hook (system/light/dark)
-│   │   └── useModalA11y.ts      # WCAG focus trap and modal accessibility hook
-│   ├── App.tsx                  # Main application state & routing layout
-│   ├── index.css                # Tailwind CSS v4 styling & base typography
-│   └── main.tsx                 # Application entry point
-├── tests/                       # Automated Vitest + Happy-DOM test suites (86 tests)
-│   ├── payloads.test.ts         # All 11 QR payload builders, RFC escaping, & jsQR checks
-│   ├── renderer.test.ts         # QR bit-matrix, SVG shapes, preset logos, & WCAG contrast
-│   ├── security-and-fixes.test.ts # XSS-safe print DOM, Wi-Fi password stripping, & CSV rules
-│   ├── hooks-and-a11y.test.tsx  # Modal focus trap (Tab/Shift+Tab/Escape) & theme cycling
-│   ├── components.test.tsx      # All destination forms, StyleControls, Batch, & Library UI
-│   ├── workflow.test.ts         # End-to-end creation, sanitization, & JSON backup flows
-│   └── responsive.test.ts       # Viewport width bounds (320px–1440px) & aspect ratios
-├── .env.example                 # Environment configuration notes
-├── .gitignore                   # Standard git exclusions
-├── LICENSE                      # MIT License
-├── README.md                    # Project documentation & disclaimer
-├── CONTRIBUTING.md               # Contribution guidelines
-├── SECURITY.md                  # Vulnerability disclosure policy
-└── CODE_OF_CONDUCT.md           # Contributor Covenant v2.1
-```
+- **Printed codes cannot be changed.** The destination is baked into the pattern.
+- **Long content makes dense codes.** Above roughly 300 characters the modules get small. Use a higher error correction level and print larger.
+- **Logos cover data.** Use level H when a logo is present.
+- **The scan check is a good sign, not a guarantee.** Always test a printed code with a real phone before a big print run.
 
----
+## Roadmap
 
-## Accessibility & Security Notes
+Completed and planned work is tracked in [`docs/ROADMAP.md`](docs/ROADMAP.md). Ideas and requests are welcome in [Issues](https://github.com/Devputta/QRForge/issues).
 
-- **Keyboard & Screen Reader Access**: Modals implement full focus trapping (`Tab` cycle), Escape-key dismissal, and return focus to triggering buttons.
-- **Touch-Friendly Controls**: Minimum tap target sizes of $\ge 38\text{px}$ to $\ge 44\text{px}$ across mobile viewports.
-- **No Tracking**: No telemetry or third-party tracking scripts.
-- **Sanitized Outputs**: DOM construction in print previews uses explicit DOM text nodes (`createElement` + `textContent`) to avoid XSS risks.
-- **Wi-Fi Credential Hygiene**: Wi-Fi passwords are automatically stripped prior to storing drafts or backing up to JSON.
+## Contributing
 
----
+Contributions are welcome, from bug reports to new QR types.
 
-## Known Limitations
+1. Fork the repository and create a branch.
+2. Make a focused change that follows the existing style.
+3. Run `npm run lint` and `npm test`.
+4. Open a pull request that explains what changed and why.
 
-- **Physical Medium Dependency**: Once a static QR code is printed on a brochure, billboard, or business card, its destination cannot be changed.
-- **URL Payload Size vs Density**: Very long URLs (>300 characters) generate higher-density matrices with smaller modules. For dense payloads, choose higher error correction and adequate print dimensions.
-- **Logo Coverage**: Center logos obstruct the underlying data modules. When adding custom logos, Level `H` error correction (~30% recovery) is recommended.
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md) first. Never commit real passwords, private documents or API keys.
 
----
+## Security reporting
+
+Please do not post vulnerability details in a public issue. Follow the steps in [`SECURITY.md`](SECURITY.md) to report privately.
+
+## License
+
+Released under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-> **Disclaimer**
->
-> QRForge is provided for general-purpose QR code generation. Users are responsible for verifying the content encoded in a QR code and ensuring that they have the rights and permissions necessary to use the information, logos, or other assets they provide.
->
-> QR codes may contain links or information that lead to malicious, misleading, or unsafe destinations. Always verify a destination before opening it or sharing the code.
->
-> The software is provided “as is,” to the extent permitted by applicable law, without warranties of any kind. The maintainers are not responsible for misuse of generated QR codes, third-party destinations, or resulting losses, subject to applicable law.
->
-> This project is not affiliated with or endorsed by any third-party brand or service unless explicitly stated.
+QRForge is provided for general-purpose QR code generation. You are responsible for checking what each code contains and for having the rights to any logos or content you add.
+
+A QR code can point to a harmful or misleading destination. Check a destination before sharing a code or opening one.
+
+The software is provided "as is", without warranty of any kind, to the extent permitted by law. The maintainers are not responsible for misuse of generated codes, third-party destinations or resulting losses. This project is not affiliated with or endorsed by any third-party brand or service.
+
+---
+
+<p align="center">
+  <strong>QRForge</strong><br />
+  Private by design. Static by choice.
+</p>
