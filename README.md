@@ -303,10 +303,12 @@ The software is provided "as is", without warranty of any kind, to the extent pe
 
 
 
-<p align="center">  <a href="https://github.com/Devputta/Drafts-might-be-needed-/blob/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%20(1).jfif" target="_blank" rel="noopener noreferrer">    <img src="https://raw.githubusercontent.com/Devputta/Drafts-might-be-needed-/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%20(1).jfif" alt="Doculens Project Logo" width="220" />  </a></p>
+<p align="center">  <a href="https://github.com/Devputta/Drafts-might-be-needed-/blob/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%20(1).jfif" target="_blank" rel="noopener noreferrer">    <img src="https://wsrv.nl/?url=raw.githubusercontent.com/Devputta/Drafts-might-be-needed-/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%2520(1).jfif&w=400&h=400&fit=cover&mask=circle&output=png" alt="DevPutta Logo" width="220" />  </a></p>
 
-
+<img src="https://wsrv.nl/?url=raw.githubusercontent.com/Devputta/Drafts-might-be-needed-/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%2520(1).jfif&w=400&h=400&fit=cover&mask=circle&output=png" alt="DevPutta Logo" width="220" />
 ---
+
+<img src="https://raw.githubusercontent.com/Devputta/Drafts-might-be-needed-/main/LOGO/Gemini_Generated_Image_1ppnm1ppnm1ppnm1%20(1).jfif" alt="Doculens Project Logo" width="220" />
 
 <p align="center">
   <strong>QRForge</strong><br />
